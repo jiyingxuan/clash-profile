@@ -65,6 +65,11 @@ proxy-groups:
     type: select
     proxies: [新加坡, 台湾, 日本, 美国]
 
+  # STEAM的代理策略
+  - name: STEAM
+    type: select
+    proxies: [DIRECT, 香港, 澳门, 新加坡, 台湾, 日本, 美国]
+
   # 哔哩哔哩港澳台&巴哈姆特动画疯
   - name: 海外动画
     type: select
@@ -272,6 +277,22 @@ rule-providers:
     path: ./ruleset/Bahamut.yaml
     interval: 86400
 
+  # steam
+  Steam_Rule:
+    type: http
+    behavior: classical
+    url: "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script/master/rule/Clash/Steam/Steam.yaml"
+    path: ./ruleset/Steam.yaml
+    interval: 86400
+
+  # SteamCN
+  SteamCN_Rule:
+    type: http
+    behavior: classical
+    url: "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml"
+    path: ./ruleset/SteamCN.yaml
+    interval: 86400
+
   # 抖音
   DouYin_Rule:
     type: http
@@ -292,10 +313,10 @@ rule-providers:
 # 代理规则（按优先顺序从上到下匹配）
 # -------------------------------------------------------------------
 rules:
-  # 1. 局域网/局域设备直连
+  # 局域网/局域设备直连
   - 'GEOIP,LAN,DIRECT'
 
-  # 2. 自定义精确域名/关键字规则
+  # 自定义规则
   - 'DOMAIN-KEYWORD,doubao,DIRECT'
   - 'DOMAIN,generativelanguage.googleapis.com,AI'
 
@@ -313,9 +334,14 @@ rules:
   - 'RULE-SET,DMM_Rule,日本'
   - 'RULE-SET,Bahamut_Rule,海外动画'
   - 'RULE-SET,BiliBiliIntl_Rule,海外动画'
+  - 'RULE-SET,Steam_Rule,STEAM'
+  - 'RULE-SET,SteamCN_Rule,DIRECT'
 
-  # 4. 国内 IP 直连兜底
+  # steam 下载接入点补充
+  - 'DOMAIN-SUFFIX,steamcontent.com,STEAM'
+
+  # 国内 IP 直连兜底
   - 'GEOIP,CN,DIRECT'
 
-  # 5. 最终兜底规则
+  # 最终兜底规则
   - 'MATCH,默认策略'
