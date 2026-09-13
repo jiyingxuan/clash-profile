@@ -289,30 +289,11 @@ rule-providers:
     interval: 86400
 
 # -------------------------------------------------------------------
-# 代理规则
+# 自定义代理规则
 # -------------------------------------------------------------------
 rules:
-  # remote work
-  - 'DOMAIN,RDCB.OISM.CN,DIRECT'
-  - 'DOMAIN-SUFFIX,OISM.CN,DIRECT'
-
-  # emby
-  - 'DOMAIN,smart.uhdnow.com,DIRECT'
-  - 'DOMAIN,emby.m78tv.com,默认策略'
-  - 'DOMAIN,adult.m78tv.com,默认策略'
-  - 'DOMAIN-KEYWORD,m78tv,默认策略'
-
-  # NAS直连
-  - 'DOMAIN-SUFFIX,dangonas.ltd,DIRECT'
-  - 'DOMAIN-KEYWORD,dangonas,DIRECT'
-  - 'IP-CIDR,192.168.50.245/24,DIRECT'
-
   # 国内直连
   - 'DOMAIN-KEYWORD,doubao,DIRECT'
-
-  # 机场代理
-  - 'DOMAIN-SUFFIX,m78star.cloud,默认策略'
-  - 'DOMAIN-SUFFIX,tagss.pro,默认策略'
 
   # 外部规则 (Rule-Set)
   - 'RULE-SET,China_Rule,DIRECT'
