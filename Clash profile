@@ -48,7 +48,7 @@ proxy-groups:
   # 默认的代理策略
   - name: 默认策略
     type: select
-    proxies: [香港, 澳门, 新加坡, 台湾, 日本, 美国, ikuuu, 瑶瑶领先, 全部节点]
+    proxies: [香港, 澳门, 新加坡, 台湾, 日本, 美国, Airport1, Airport2, 全部节点]
 
   # TG的代理策略
   - name: Telegram
@@ -154,7 +154,7 @@ proxy-groups:
   # 订阅源相关策略组
   # -------------------------------------------------------------------
   # 第一个机场节点自动选优
-  - name: ikuuu
+  - name: Airport1
     type: url-test
     use:
       - Airport1
@@ -164,7 +164,7 @@ proxy-groups:
     lazy: true
 
   # 第二个机场节点自动选优
-  - name: 瑶瑶领先
+  - name: Airport2
     type: url-test
     use:
       - Airport2
@@ -289,13 +289,17 @@ rule-providers:
     interval: 86400
 
 # -------------------------------------------------------------------
-# 自定义代理规则
+# 代理规则（按优先顺序从上到下匹配）
 # -------------------------------------------------------------------
 rules:
-  # 国内直连
-  - 'DOMAIN-KEYWORD,doubao,DIRECT'
+  # 1. 局域网/局域设备直连
+  - 'GEOIP,LAN,DIRECT'
 
-  # 外部规则 (Rule-Set)
+  # 2. 自定义精确域名/关键字规则
+  - 'DOMAIN-KEYWORD,doubao,DIRECT'
+  - 'DOMAIN,generativelanguage.googleapis.com,AI'
+
+  # 3. 引用外部规则集 (Rule-Set)
   - 'RULE-SET,China_Rule,DIRECT'
   - 'RULE-SET,WeChat_Rule,DIRECT'
   - 'RULE-SET,DingTalk_Rule,DIRECT'
@@ -310,8 +314,8 @@ rules:
   - 'RULE-SET,Bahamut_Rule,海外动画'
   - 'RULE-SET,BiliBiliIntl_Rule,海外动画'
 
-  # Gemini 常用接入点补充
-  - 'DOMAIN,generativelanguage.googleapis.com,AI'
+  # 4. 国内 IP 直连兜底
+  - 'GEOIP,CN,DIRECT'
 
-  # 兜底和其他规则
+  # 5. 最终兜底规则
   - 'MATCH,默认策略'
